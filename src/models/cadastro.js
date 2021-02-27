@@ -1,6 +1,6 @@
 function validarLogin(login){
-    if(login.length > 3 || login.length < 20){
-      return {valido:false, texto:"Login deve ter mais que 3 e menos que 20 digitos."}
+    if(login.length < 3 || login.length < 20){
+      return {valido:false, texto:"Login deve ser entre 3 e 20 digitos."}
     }else{
       return {valido:true, texto:""}
     }

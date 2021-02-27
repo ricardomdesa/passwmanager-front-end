@@ -1,7 +1,7 @@
-import React, { useState, useContext } from "react";
-import { TextField, Button } from "@material-ui/core";
-import ValidacoesCadastro from "../../context/ValidacoesCadastro";
-import useErros from "../../hooks/useErros";
+import React, { useState, useContext } from "react"
+import { TextField, Button } from "@material-ui/core"
+import ValidacoesCadastro from "../../context/ValidacoesCadastro"
+import useErros from "../../hooks/useErros"
 
 function DadosUsuario({ aoEnviar }) {
   const [login, setLogin] = useState("");
@@ -23,8 +23,8 @@ function DadosUsuario({ aoEnviar }) {
         onChange={(event) => {
           setLogin(event.target.value);
         }}
-        onBlur={validarCampos}
-        error={!erros.login.valido}
+        // onBlur={validarCampos}
+        // error={!erros.login.valido}
         helperText={erros.login.texto}
         id="login"
         name="login"
