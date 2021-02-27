@@ -1,11 +1,11 @@
-import { TextField, Button } from "@material-ui/core";
+import { TextField, Button, Typography } from "@material-ui/core";
 import ValidacoesCadastro from "../../context/ValidacoesCadastro";
 import useErros from "../../hooks/useErros";
 import api from "../../api/api"
 import { useState, useContext } from 'react'
 
 
-export default function AddSenha({ getCurrentLogin }) {
+export default function AddSenha({ getCurrentLogin, aoEnviar }) {
 
     const [nome, setNome] = useState("");
     const [senha, setSenha] = useState("");
@@ -26,6 +26,7 @@ export default function AddSenha({ getCurrentLogin }) {
     };
 
     return <>
+        <Typography variant="h3" component="h2" align="center" >Adicionar senha</Typography>
         <form
             onSubmit={() => {
                 // if (possoEnviar()) {
@@ -33,6 +34,7 @@ export default function AddSenha({ getCurrentLogin }) {
                 // }
                 addSenhaApi()
                 console.log('senha adicionada')
+                aoEnviar(3);
             }
             }
         >
