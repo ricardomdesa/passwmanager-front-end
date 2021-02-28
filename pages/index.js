@@ -68,7 +68,9 @@ export default function Home() {
         {getPage(index)}
         {/* <DadosUsuario aoEnviar={collectDados}/>
         <AddUser></AddUser>
-        <AddSenha getCurrentLogin={()=> users.login}></AddSenha> */}
+        <AddSenha getCurrentLogin={()=> users.id}></AddSenha>
+
+         */}
       </ValidacoesCadastro.Provider>
     </div>
   )
@@ -82,7 +84,7 @@ export default function Home() {
         return <AddUser aoEnviar={changePage}></AddUser>
         break;
       case 2:
-        return <AddSenha getCurrentLogin={()=> users.login} aoEnviar={changePage}></AddSenha>;
+        return <AddSenha getCurrentLogin={()=> users.id} aoEnviar={changePage}></AddSenha>;
         break;   
       case 3:
         return <ListaSenhas aoEnviar={changePage}></ListaSenhas> 
