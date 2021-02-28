@@ -13,7 +13,7 @@ export default function AddSenha({ getCurrentLogin }) {
     const [categoria, setCategoria] = useState("");
 
     const addSenhaApi = async () => {
-        let resp = await api.post('/senhas', {
+        let resp = await api.post('/senhas/' + getCurrentLogin(), {
             "nome": nome,
             "login": login,
             "senha": senha,

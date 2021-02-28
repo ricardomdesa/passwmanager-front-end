@@ -55,7 +55,7 @@ export default function Home() {
       <ValidacoesCadastro.Provider value={{login: validarLogin, senha: validarSenha}}>
         <DadosUsuario aoEnviar={collectDados}/>
         <AddUser></AddUser>
-        <AddSenha getCurrentLogin={()=> users.login}></AddSenha>
+        <AddSenha getCurrentLogin={()=> users.id}></AddSenha>
       </ValidacoesCadastro.Provider>
     </div>
   )
