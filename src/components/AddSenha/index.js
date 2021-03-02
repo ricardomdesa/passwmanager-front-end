@@ -1,4 +1,5 @@
 import { TextField, Button, Typography } from "@material-ui/core";
+import 'fontsource-roboto';
 import ValidacoesCadastro from "../../context/ValidacoesCadastro";
 import useErros from "../../hooks/useErros";
 import api from "../../api/api"
@@ -13,15 +14,20 @@ export default function AddSenha({ getCurrentLogin, aoEnviar }) {
     const [categoria, setCategoria] = useState("");
 
     const addSenhaApi = async () => {
-        let resp = await api.post('/senhas/' + getCurrentLogin(), {
-            "nome": nome,
-            "login": login,
-            "senha": senha,
-            "categoria": categoria
-        })
+        let respUser = await api.get('/users/' + getCurrentLogin())
+        .catch((err) => console.log("Api get user by login error: ", err));
+        if(respUser && respUser.data){
+
+            let resp = await api.post('/senhas/' + respUser.data.id, {
+                "nome": nome,
+                "login": login,
+                "senha": senha,
+                "categoria": categoria
+            })
             .catch((err) => console.log("Api post senha error: ", err));
-        if (resp && resp.data) {
-            console.log('api post senha return', resp.data)
+            if (resp && resp.data) {
+                console.log('api post senha return', resp.data)
+            }
         }
     };
 
@@ -34,7 +40,7 @@ export default function AddSenha({ getCurrentLogin, aoEnviar }) {
                 // }
                 addSenhaApi()
                 console.log('senha adicionada')
-                aoEnviar(3);
+                aoEnviar(0);
             }
             }
         >
@@ -109,6 +115,14 @@ export default function AddSenha({ getCurrentLogin, aoEnviar }) {
             <Button type="submit" variant="contained" color="primary">
                 Adicionar
       </Button>
+        </form>
+        <form onSubmit={(event)=>{
+            event.preventDefault();
+                aoEnviar({ addUser });
+            }}>
+            <Button type="submit" variant="contained" color="secondary">
+                Voltar
+            </Button>
         </form>
     </>
 }

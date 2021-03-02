@@ -1,20 +1,21 @@
+import { React, Fragment, useState, useEffect } from 'react';
 import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import { Container } from '@material-ui/core'
 import DadosUsuario from '../src/components/login'
-import { Typography } from '@material-ui/core'
-import { useState, useEffect } from 'react';
 import { validarLogin, validarSenha } from '../src/models/cadastro'
 import ValidacoesCadastro from "../src/context/ValidacoesCadastro"
 import api from '../src/api/api'
 import AddUser from '../src/components/AddUser'
-import AddSenha from '../src/components/AddSenha'
-import ListaSenhas from '../src/components/ListaSenhas';
+import NavBar from '../src/components/NavBar';
+import 'fontsource-roboto';
+
+import { useRouter } from 'next/router';
 
 export default function Home() {
 
   const [dados, setDados] = useState({});
-  const [users, setUsers] = useState([]);
-  const [index, setIndex] = useState(3);
+  const [index, setIndex] = useState(0);
+  const router = useRouter();
 
   function collectDados(dados){
     setDados(dados);
@@ -36,43 +37,30 @@ export default function Home() {
     .catch((err) => console.log("Api error: ", err));
     if(resp && resp.data) {
       if (dados.senha == resp.data.senha) {
-        setUsers(resp.data);
-        console.log('sucesso no login')
-        setIndex(2);
+        console.log('sucesso no login', resp.data.id);
+        router.push(`/senhas?login=${resp.data.id}`);
       }else{
         console.log('falha no login')
-        setUsers({});
       }
     }
   }
 
-  const getUsers = async () => {
-    const resp = await api
-    .get("/users")
-    .catch((err) => console.log("Api error: ", err));
-    if(resp && resp.data) setUsers(resp.data);
-  }
-
-  useEffect(() => {
-    getUsers();
-  }, []);
-
   return (
-    <div className={styles.container}>
+    <>
       <Head>
         <title>Passwd Manager</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Typography variant="h3" component="h1" align="center" >Passwd Manager</Typography>
-      <ValidacoesCadastro.Provider value={{login: validarLogin, senha: validarSenha}}>
-        {getPage(index)}
-        {/* <DadosUsuario aoEnviar={collectDados}/>
-        <AddUser></AddUser>
-        <AddSenha getCurrentLogin={()=> users.id}></AddSenha>
+      <Fragment>
 
-         */}
-      </ValidacoesCadastro.Provider>
-    </div>
+      <NavBar changePage={changePage} getUserLogged={()=>{}}></NavBar>
+      <Container component="article" maxWidth="sm">
+        <ValidacoesCadastro.Provider value={{login: validarLogin, senha: validarSenha}}>
+          {getPage(index)}
+        </ValidacoesCadastro.Provider>
+      </Container>
+      </Fragment>
+    </>
   )
 
   function getPage(index){
@@ -83,11 +71,6 @@ export default function Home() {
       case 1:
         return <AddUser aoEnviar={changePage}></AddUser>
         break;
-      case 2:
-        return <AddSenha getCurrentLogin={()=> users.id} aoEnviar={changePage}></AddSenha>;
-        break;   
-      case 3:
-        return <ListaSenhas aoEnviar={changePage}></ListaSenhas> 
       default:
         break;
     }

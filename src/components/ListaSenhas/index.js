@@ -1,29 +1,43 @@
 import { Button, Typography } from "@material-ui/core";
 import api from "../../api/api"
 import { useState, useContext, useEffect } from 'react'
+import { useRouter } from 'next/router';
+import CardSenhas from "../CardSenhas";
 
 
-export default function ListaSenhas({ aoEnviar }) {
+export default function ListaSenhas({ aoEnviar, userLogin }) {
 
-    const [senhas, setSenhas] = useState([]);
+    const [senhas, setSenhas] = useState([{ 'nome': 'nome1' }]);
+    const router = useRouter();
+
 
     const listaSenhasApi = async (userId) => {
-        let resp = await api.get('/senhas')
+
+        let respSenha = await api.get('/senhas/' + userId)
             .catch((err) => console.log("Api get senha error: ", err));
-        if (resp && resp.data) {
-            setSenhas(resp.data);
-            console.log('api get senha return', resp.data)
+        if (respSenha && respSenha.data) {
+            if (respSenha.data.status !== 'Erro') {
+                setSenhas(respSenha.data);
+                console.log('API get senhas:', respSenha.data);
+            }
+        } else {
+            console.log('Erro ao listar senhas do usuario: ', userId);
         }
     };
 
-    useEffect(() =>{
-        listaSenhasApi(2);
+    useEffect(() => {
+        console.log(userLogin)
+        if (userLogin !== undefined) {
+            listaSenhasApi(userLogin);
+        } else {
+            console.log('Usuario nao definido', userLogin);
+        }
     }, [])
 
     return <>
         <Typography variant="h3" component="h2" align="center" >Lista de senhas</Typography>
 
-        <ul>
+        {/* <ul>
             {senhas.map((element) => (
                 <li key={element}>
                     <span>{element.nome} </span>
@@ -32,12 +46,13 @@ export default function ListaSenhas({ aoEnviar }) {
                     <span>{element.categoria}</span>
                 </li>
             ))}
-        </ul>
+        </ul> */}
+        <CardSenhas dados={senhas}></CardSenhas>
 
         <form onSubmit={(e) => {
-                e.preventDefault();
-                aoEnviar(2);
-            }
+            e.preventDefault();
+            aoEnviar(1);
+        }
         }>
             <Button type="submit" variant="contained" color="primary">
                 Nova senha

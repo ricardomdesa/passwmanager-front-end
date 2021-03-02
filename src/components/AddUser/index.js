@@ -1,4 +1,5 @@
 import { TextField, Button, Typography } from "@material-ui/core";
+import 'fontsource-roboto';
 import ValidacoesCadastro from "../../context/ValidacoesCadastro";
 import useErros from "../../hooks/useErros";
 import api from "../../api/api"
