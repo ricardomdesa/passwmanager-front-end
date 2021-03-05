@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles({
@@ -29,35 +27,32 @@ export default function CardSenhas({ dados }) {
     const bull = <span className={classes.bullet}>•</span>;
     console.log(dados)
 
-    if(dados.lenght !== 0){
+    if (dados.lenght !== 0) {
 
-    return (
-        <Card className={classes.root}>
-            <CardContent>
-                <Typography className={classes.title} color="textSecondary" gutterBottom>
-                    {dados[0].nome}
+        return (
+            <Card className={classes.root}>
+                <CardContent>
+                    <Typography className={classes.title} color="textSecondary" gutterBottom>
+                        {dados.nome}
                     </Typography>
-                <Typography variant="h5" component="h2">
-                {/* {dados[1].senha} */}
+                    <Typography variant="h5" component="h2">
+                        Senha: {dados.senha}
                     </Typography>
-                <Typography className={classes.pos} color="textSecondary">
-                {/* {dados[0].senha} */}
+                    <Typography className={classes.pos} color="textSecondary">
+                        Login: {dados.login}
                     </Typography>
-                <Typography variant="body2" component="p">
-                      <br />
-                      {/* {dados[0].categoria} */}
-                </Typography>
-            </CardContent>
-            <CardActions>
-                <Button size="small">Learn More</Button>
-            </CardActions>
-        </Card>
-    );
-    }else{
-        return(
+                    <Typography variant="body2" component="p">
+                        <br />
+                        Categoria: {dados.categoria}
+                    </Typography>
+                </CardContent>
+            </Card>
+        );
+    } else {
+        return (
             <>
                 <Typography variant="body2" component="p">
-                Error
+                    Error
                 </Typography>
             </>
         )

@@ -45,12 +45,11 @@ export default function NavBar({ getUserLogged, changePage }) {
         if (user !== undefined) {
             return (
                 <>
-                    <Typography variant="h6" className={classes.title}> Olá, {user}</Typography>
+                    {/* <Typography variant="h6" className={classes.title}> Senhas de, {user}</Typography> */}
                     <form onSubmit={(e) => {
                         e.preventDefault();
                         console.log("sair");
                         router.push(`/`);
-                        // changePage(0);
                     }}>
                         <Button type="submit" color="secondary">Sair</Button>
                     </form>

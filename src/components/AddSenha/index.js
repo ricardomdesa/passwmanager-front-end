@@ -2,7 +2,7 @@ import { TextField, Button, Typography } from "@material-ui/core";
 import 'fontsource-roboto';
 import ValidacoesCadastro from "../../context/ValidacoesCadastro";
 import useErros from "../../hooks/useErros";
-import api from "../../api/api"
+import { addSenhaApi } from "../../api/api"
 import { useState, useContext } from 'react'
 
 
@@ -13,24 +13,6 @@ export default function AddSenha({ getCurrentLogin, aoEnviar }) {
     const [login, setLogin] = useState("");
     const [categoria, setCategoria] = useState("");
 
-    const addSenhaApi = async () => {
-        let respUser = await api.get('/users/' + getCurrentLogin())
-        .catch((err) => console.log("Api get user by login error: ", err));
-        if(respUser && respUser.data){
-
-            let resp = await api.post('/senhas/' + respUser.data.id, {
-                "nome": nome,
-                "login": login,
-                "senha": senha,
-                "categoria": categoria
-            })
-            .catch((err) => console.log("Api post senha error: ", err));
-            if (resp && resp.data) {
-                console.log('api post senha return', resp.data)
-            }
-        }
-    };
-
     return <>
         <Typography variant="h3" component="h2" align="center" >Adicionar senha</Typography>
         <form
@@ -38,7 +20,7 @@ export default function AddSenha({ getCurrentLogin, aoEnviar }) {
                 // if (possoEnviar()) {
                 //     // addSenhaApi(login, senha);
                 // }
-                addSenhaApi()
+                addSenhaApi(getCurrentLogin(), {nome: nome, login: login, senha: senha, categoria: categoria})
                 console.log('senha adicionada')
                 aoEnviar(0);
             }

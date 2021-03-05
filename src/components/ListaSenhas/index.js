@@ -1,62 +1,54 @@
-import { Button, Typography } from "@material-ui/core";
-import api from "../../api/api"
-import { useState, useContext, useEffect } from 'react'
-import { useRouter } from 'next/router';
+import { listaSenhasApi } from "../../api/api"
+import React, { useState, useEffect } from 'react'
 import CardSenhas from "../CardSenhas";
 
+import { Button, Typography } from "@material-ui/core";
+import { makeStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
+import 'fontsource-roboto';
+
+const useStyles = makeStyles((theme) => ({
+    root: {
+        flexGrow: 1,
+    },
+    card: {
+        padding: theme.spacing(2),
+        textAlign: 'center',
+        color: theme.palette.text.secondary,
+    },
+}));
 
 export default function ListaSenhas({ aoEnviar, userLogin }) {
 
-    const [senhas, setSenhas] = useState([{ 'nome': 'nome1' }]);
-    const router = useRouter();
+    const classes = useStyles();
 
-
-    const listaSenhasApi = async (userId) => {
-
-        let respSenha = await api.get('/senhas/' + userId)
-            .catch((err) => console.log("Api get senha error: ", err));
-        if (respSenha && respSenha.data) {
-            if (respSenha.data.status !== 'Erro') {
-                setSenhas(respSenha.data);
-                console.log('API get senhas:', respSenha.data);
-            }
-        } else {
-            console.log('Erro ao listar senhas do usuario: ', userId);
-        }
-    };
+    const [senhas, setSenhas] = useState([]);
 
     useEffect(() => {
-        console.log(userLogin)
-        if (userLogin !== undefined) {
-            listaSenhasApi(userLogin);
-        } else {
-            console.log('Usuario nao definido', userLogin);
-        }
+        listaSenhasApi(userLogin, setSenhas);
     }, [])
 
     return <>
-        <Typography variant="h3" component="h2" align="center" >Lista de senhas</Typography>
-
-        {/* <ul>
-            {senhas.map((element) => (
-                <li key={element}>
-                    <span>{element.nome} </span>
-                    <span>{element.senha} </span>
-                    <span>{element.login} </span>
-                    <span>{element.categoria}</span>
-                </li>
-            ))}
-        </ul> */}
-        <CardSenhas dados={senhas}></CardSenhas>
+        <Typography variant="h3" component="h3" align="center" color="primary" >Lista de senhas</Typography>
 
         <form onSubmit={(e) => {
             e.preventDefault();
             aoEnviar(1);
         }
         }>
-            <Button type="submit" variant="contained" color="primary">
+            <Button type="submit" variant="contained" color="primary" >
                 Nova senha
             </Button>
         </form>
+
+        <div className={classes.root}>
+            <Grid container spacing={3}>
+                {senhas.map((element) => (
+                    <Grid item xs>
+                        <CardSenhas dados={element} className={classes.card}></CardSenhas>
+                    </Grid>
+                ))}
+            </Grid>
+        </div>
     </>
 }

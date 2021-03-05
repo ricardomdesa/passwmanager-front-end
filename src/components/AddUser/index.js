@@ -2,7 +2,7 @@ import { TextField, Button, Typography } from "@material-ui/core";
 import 'fontsource-roboto';
 import ValidacoesCadastro from "../../context/ValidacoesCadastro";
 import useErros from "../../hooks/useErros";
-import api from "../../api/api"
+import { addUserApi } from "../../api/api"
 import { useState, useContext } from 'react'
 
 
@@ -11,17 +11,6 @@ export default function AddUser({ aoEnviar }) {
     const [senha, setSenha] = useState("");
     const validacoes = useContext(ValidacoesCadastro);
     const [erros, validarCampos, possoEnviar] = useErros(validacoes);
-
-    const addUserApi = async (login, senha) => {
-        let resp = await api.post('/users', {
-            login: login,
-            senha: senha
-        })
-            .catch((err) => console.log("Api post error: ", err));
-        if (resp && resp.data) {
-            console.log('api post return', resp.data)
-        }
-    };
 
     return (
         <>

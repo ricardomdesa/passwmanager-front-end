@@ -11,11 +11,11 @@ import AddSenha from '../../src/components/AddSenha';
 export default function Senhas() {
     const router = useRouter();
     const [index, setIndex] = useState(0);
-    const [userLogin, setUserLogin] = useState('default');
+    const [userLogin, setUserLogin] = useState(1);
 
     useEffect(() => {
-        setUserLogin(router.query['login'])
-    }, [])
+        setUserLogin(1);
+    })
 
     function changePage(idx) {
         setIndex(idx);
@@ -24,11 +24,11 @@ export default function Senhas() {
     return (
         <>
             <Head>
-                <title>Passwd Manager</title>
+    <title>Passwd Manager</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <Fragment>
-                <NavBar changePage={changePage} getUserLogged={() => router.query['loginId']}></NavBar>
+                <NavBar changePage={changePage} getUserLogged={() => userLogin}></NavBar>
                 <Container component="article" maxWidth="sm">
                     {getPage(index)}
                 </Container>
@@ -39,10 +39,10 @@ export default function Senhas() {
     function getPage(idx) {
         switch (idx) {
             case 0:
-                return <ListaSenhas userLogin={router.query['loginId']} aoEnviar={changePage}></ListaSenhas>;
+                return <ListaSenhas aoEnviar={changePage} userLogin={userLogin}></ListaSenhas>;
                 break;
             case 1:
-                return <AddSenha getCurrentLogin={() => router.query['loginId']} aoEnviar={changePage}></AddSenha>;
+                return <AddSenha getCurrentLogin={() => userLogin} aoEnviar={changePage}></AddSenha>;
                 break;
 
             default:

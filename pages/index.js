@@ -4,17 +4,21 @@ import { Container } from '@material-ui/core'
 import DadosUsuario from '../src/components/login'
 import { validarLogin, validarSenha } from '../src/models/cadastro'
 import ValidacoesCadastro from "../src/context/ValidacoesCadastro"
-import api from '../src/api/api'
 import AddUser from '../src/components/AddUser'
 import NavBar from '../src/components/NavBar';
 import 'fontsource-roboto';
+import { getUsersByLogin } from '../src/api/api'
 
 import { useRouter } from 'next/router';
+
+// https://blog.logrocket.com/using-authentication-in-next-js/
 
 export default function Home() {
 
   const [dados, setDados] = useState({});
   const [index, setIndex] = useState(0);
+  const [loginId, setLoginId] = useState(0);
+
   const router = useRouter();
 
   function collectDados(dados){
@@ -22,28 +26,35 @@ export default function Home() {
     if(dados.addUser){
       setIndex(1);
     }else{
-      getUsersByLogin(dados);
+      if(getUsersByLogin(dados, setLoginId)){
+        router.push(`/senhas?login=${loginId}`);
+      }
     }
     
   }
+
 
   function changePage(idx){
     setIndex(idx);
   }
 
-  const getUsersByLogin = async (dados) => {
-    const resp = await api
-    .get("/users/" + dados.login)
-    .catch((err) => console.log("Api error: ", err));
-    if(resp && resp.data) {
-      if (dados.senha == resp.data.senha) {
-        console.log('sucesso no login', resp.data.id);
-        router.push(`/senhas?login=${resp.data.id}`);
-      }else{
-        console.log('falha no login')
-      }
-    }
-  }
+  useEffect(()=>{
+    router.push('/senhas')
+  }, [])
+
+  // const getUsersByLogin = async (dados) => {
+  //   const resp = await api
+  //   .get("/users/" + dados.login)
+  //   .catch((err) => console.log("Api error: ", err));
+  //   if(resp && resp.data) {
+  //     if (dados.senha == resp.data.senha) {
+  //       console.log('sucesso no login', resp.data.id);
+  //       router.push(`/senhas?login=${resp.data.id}`);
+  //     }else{
+  //       console.log('falha no login')
+  //     }
+  //   }
+  // }
 
   return (
     <>
